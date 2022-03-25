@@ -1,5 +1,3 @@
-import sys
-import subprocess
 from pwn import *
 from prettytable import PrettyTable
 
