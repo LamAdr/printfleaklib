@@ -11,7 +11,6 @@ I install it this way:
 
 \$ sudo pip install dist/printfleaklib-0.0.0-py3-none-any.whl
 
-
 Compile demo.c with 'gcc demo.c -o demo' and run demo.py against it.
 
 I don't doubt that anyone can improve this code. Please do so if you feel like it.
