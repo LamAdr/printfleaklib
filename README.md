@@ -6,8 +6,8 @@ For values pointing to stack addresses, returns the offset from the return addre
 gdb is used to find the return address. It logs it via the gdb.txt file that you will find in $PWD.
 
 I install it this way:
-/$ python3 setup.py bdist_wheel
-/$ sudo pip install dist/printfleaklib-0.0.0-py3-none-any.whl
+\n$ python3 setup.py bdist_wheel
+\n$ sudo pip install dist/printfleaklib-0.0.0-py3-none-any.whl
 
 Compile demo.c with 'gcc demo.c -o demo' and run demo.py against it.
 
