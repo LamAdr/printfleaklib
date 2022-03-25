@@ -88,38 +88,37 @@ def _maps(p):
     start_address, end_address = 0, 0       # start and end addresses of segments or files
 
     path = "/proc/" + str(p.pid) + "/maps"
-    proc_maps = subprocess.Popen(['cat', path], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-    out, err = [ x.decode("utf-8") for x in proc_maps.communicate() ]
-    lines = out.splitlines()
 
     if (V>1): print("\nMAPS :")
-    for line in lines:
+    with open(path, "r") as proc:
+        for line in proc.readlines():
+       
+            line = line[:-1]
+            if (V>1): print(line)
 
-        if (V>1): print(line)
+            mfile = re.split(r'/|\[', line)[-1]
+            mfile = mfile[:-1] if mfile[-1] == ']' else mfile
 
-        mfile = re.split(r'/|\[', line)[-1]
-        mfile = mfile[:-1] if mfile[-1] == ']' else mfile
-        
-        # no name
-        if (mfile == line[:-1]):
-            continue
+            # no name
+            if (mfile == line[:-1]):
+                continue
 
-        # file mapped to multiple segments
-        if (mfile == current_file):
-            end_address = int(re.split(r'-|\s', line)[1], 16)
-        
-        # first segment
-        else:
-            if (current_file != ""):
-                files_map[current_file].append(end_address)
-            if (mfile in files_map):
-                print("ERROR: Same file mapped to multiple non consecutive segments or mapping of multiple files sharing the same name. Execution aborted.")
-                exit(0)
-            current_file = mfile
-            start_address = int(line.split('-')[0], 16)
-            files_map[mfile] = [start_address]
-            end_address = int(re.split(r'-|\s', line)[1], 16)
+            # file mapped to multiple segments
+            if (mfile == current_file):
+                end_address = int(re.split(r'-|\s', line)[1], 16)
 
+            # first segment
+            else:
+                if (current_file != ""):
+                    files_map[current_file].append(end_address)
+                if (mfile in files_map):
+                    print("ERROR: Same file mapped to multiple non consecutive segments or mapping of multiple files sharing the same name. Execution aborted.")
+                    exit(0)
+                current_file = mfile
+                start_address = int(line.split('-')[0], 16)
+                files_map[mfile] = [start_address]
+                end_address = int(re.split(r'-|\s', line)[1], 16)
+    
     if (V>1): print("\n", end="")
 
     # end address of last line
