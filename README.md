@@ -1,6 +1,3 @@
-# experimenting with git
-# a bit more experiments
-
 # printfleaklib
 Small linux CTF tool used to manage printf format string vulnerability leaks using pwnlib.
 
